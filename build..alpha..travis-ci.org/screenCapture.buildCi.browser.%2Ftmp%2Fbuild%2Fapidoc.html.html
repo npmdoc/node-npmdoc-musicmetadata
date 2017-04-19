@@ -1,4 +1,4 @@
-<div class="apidocDiv">
+<html><head></head><body><div class="apidocDiv">
 <style>
 /*csslint
 */
@@ -47,17 +47,10 @@
 }
 </style>
 <h1>api documentation for
-    <a
-
-        href="https://github.com/leetreveil/musicmetadata#readme"
-
-    >musicmetadata (v2.0.5)</a>
+    <a href="https://github.com/leetreveil/musicmetadata#readme">musicmetadata (v2.0.5)</a>
 </h1>
 <h4>Streaming music metadata parser for node and the browser.</h4>
-<div class="apidocSectionDiv"><a
-    href="#apidoc.tableOfContents"
-    id="apidoc.tableOfContents"
-><h1>table of contents</h1></a><ol>
+<div class="apidocSectionDiv"><a href="#apidoc.tableOfContents" id="apidoc.tableOfContents"><h1>table of contents</h1></a><ol>
 
     <li class="apidocModuleLi"><a href="#apidoc.module.musicmetadata">module musicmetadata</a><ol>
 
@@ -86,7 +79,7 @@
     </h2>
     <ul>
     <li>description and source-code<pre class="apidocCodePre">musicmetadata = function (stream, opts, callback) {
-  if (typeof opts === &#x27;function&#x27;) {
+  if (typeof opts === 'function') {
     callback = opts
     opts = {}
   }
@@ -98,30 +91,30 @@
       process.nextTick(function () {
         cb(opts.fileSize)
       })
-    } else if (stream.hasOwnProperty(&#x27;path&#x27;)) {
+    } else if (stream.hasOwnProperty('path')) {
       fs.stat(stream.path, function (err, stats) {
         if (err) throw err
         cb(stats.size)
       })
-    } else if (stream.hasOwnProperty(&#x27;fileSize&#x27;)) {
+    } else if (stream.hasOwnProperty('fileSize')) {
       stream.fileSize(cb)
     } else if (opts.duration) {
       emitter.emit(
-        &#x27;done&#x27;,
-        new Error(&#x27;for non file streams, specify the size of the stream with a fileSize option&#x27;))
+        'done',
+        new Error('for non file streams, specify the size of the stream with a fileSize option'))
     }
   }
 
-  // pipe to an internal stream so we aren&#x27;t messing
+  // pipe to an internal stream so we aren't messing
   // with the stream passed to us by our users
   var istream = stream.pipe(through(null, null, {autoDestroy: false}))
 
   var metadata = {
-    title: &#x27;&#x27;,
+    title: '',
     artist: [],
     albumartist: [],
-    album: &#x27;&#x27;,
-    year: &#x27;&#x27;,
+    album: '',
+    year: '',
     track: { no: 0, of: 0 },
     genre: [],
     disk: { no: 0, of: 0 },
@@ -132,46 +125,46 @@
   var aliased = {}
 
   var hasReadData = false
-  istream.once(&#x27;data&#x27;, function (result) {
+  istream.once('data', function (result) {
     hasReadData = true
     var parser = common.getParserForMediaType(headerTypes, result)
     parser(istream, function (event, value) {
       if (value === null) return
       var alias = lookupAlias(event)
-      // emit original event &#x26; value
+      // emit original event &amp; value
       if (event !== alias) {
         emitter.emit(event, value)
       }
       buildAliases(alias, event, value, aliased)
-    }, done, opts.hasOwnProperty(&#x27;duration&#x27;), fsize)
+    }, done, opts.hasOwnProperty('duration'), fsize)
     // re-emitting the first data chunk so the
     // parser picks the stream up from the start
-    istream.emit(&#x27;data&#x27;, result)
+    istream.emit('data', result)
   })
 
-  istream.on(&#x27;end&#x27;, function () {
+  istream.on('end', function () {
     if (!hasReadData) {
-      done(new Error(&#x27;Could not read any data from this stream&#x27;))
+      done(new Error('Could not read any data from this stream'))
     }
   })
 
-  istream.on(&#x27;close&#x27;, onClose)
+  istream.on('close', onClose)
 
   function onClose () {
-    done(new Error(&#x27;Unexpected end of stream&#x27;))
+    done(new Error('Unexpected end of stream'))
   }
 
   function done (exception) {
-    istream.removeListener(&#x27;close&#x27;, onClose)
+    istream.removeListener('close', onClose)
 
-    // We only emit aliased events once the &#x27;done&#x27; event has been raised,
-    // this is because an alias like &#x27;artist&#x27; could have values split
+    // We only emit aliased events once the 'done' event has been raised,
+    // this is because an alias like 'artist' could have values split
     // over many data chunks.
     for (var _alias in aliased) {
       if (aliased.hasOwnProperty(_alias)) {
         var val
-        if (_alias === &#x27;title&#x27; || _alias === &#x27;album&#x27; ||
-          _alias === &#x27;year&#x27; || _alias === &#x27;duration&#x27;) {
+        if (_alias === 'title' || _alias === 'album' ||
+          _alias === 'year' || _alias === 'duration') {
           val = aliased[_alias][0]
         } else {
           val = aliased[_alias]
@@ -205,3 +198,4 @@
     ]
 </div>
 </div>
+</body></html>

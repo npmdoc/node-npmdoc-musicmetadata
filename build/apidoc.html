@@ -61,12 +61,141 @@
 
     <li class="apidocModuleLi"><a href="#apidoc.module.musicmetadata">module musicmetadata</a><ol>
 
+        <li>
+
+            <a class="apidocElementLiA" href="#apidoc.element.musicmetadata.musicmetadata">
+            function <span class="apidocSignatureSpan"></span>musicmetadata
+            <span class="apidocSignatureSpan">(stream, opts, callback)</span>
+            </a>
+
+        </li>
+
     </ol></li>
 
 </ol></div>
 
 <div class="apidocSectionDiv">
 <h1><a href="#apidoc.module.musicmetadata" id="apidoc.module.musicmetadata">module musicmetadata</a></h1>
+
+
+    <h2>
+        <a href="#apidoc.element.musicmetadata.musicmetadata" id="apidoc.element.musicmetadata.musicmetadata">
+        function <span class="apidocSignatureSpan"></span>musicmetadata
+        <span class="apidocSignatureSpan">(stream, opts, callback)</span>
+        </a>
+    </h2>
+    <ul>
+    <li>description and source-code<pre class="apidocCodePre">musicmetadata = function (stream, opts, callback) {
+  if (typeof opts === &#x27;function&#x27;) {
+    callback = opts
+    opts = {}
+  }
+
+  var emitter = new events.EventEmitter()
+
+  var fsize = function (cb) {
+    if (opts.fileSize) {
+      process.nextTick(function () {
+        cb(opts.fileSize)
+      })
+    } else if (stream.hasOwnProperty(&#x27;path&#x27;)) {
+      fs.stat(stream.path, function (err, stats) {
+        if (err) throw err
+        cb(stats.size)
+      })
+    } else if (stream.hasOwnProperty(&#x27;fileSize&#x27;)) {
+      stream.fileSize(cb)
+    } else if (opts.duration) {
+      emitter.emit(
+        &#x27;done&#x27;,
+        new Error(&#x27;for non file streams, specify the size of the stream with a fileSize option&#x27;))
+    }
+  }
+
+  // pipe to an internal stream so we aren&#x27;t messing
+  // with the stream passed to us by our users
+  var istream = stream.pipe(through(null, null, {autoDestroy: false}))
+
+  var metadata = {
+    title: &#x27;&#x27;,
+    artist: [],
+    albumartist: [],
+    album: &#x27;&#x27;,
+    year: &#x27;&#x27;,
+    track: { no: 0, of: 0 },
+    genre: [],
+    disk: { no: 0, of: 0 },
+    picture: [],
+    duration: 0
+  }
+
+  var aliased = {}
+
+  var hasReadData = false
+  istream.once(&#x27;data&#x27;, function (result) {
+    hasReadData = true
+    var parser = common.getParserForMediaType(headerTypes, result)
+    parser(istream, function (event, value) {
+      if (value === null) return
+      var alias = lookupAlias(event)
+      // emit original event &#x26; value
+      if (event !== alias) {
+        emitter.emit(event, value)
+      }
+      buildAliases(alias, event, value, aliased)
+    }, done, opts.hasOwnProperty(&#x27;duration&#x27;), fsize)
+    // re-emitting the first data chunk so the
+    // parser picks the stream up from the start
+    istream.emit(&#x27;data&#x27;, result)
+  })
+
+  istream.on(&#x27;end&#x27;, function () {
+    if (!hasReadData) {
+      done(new Error(&#x27;Could not read any data from this stream&#x27;))
+    }
+  })
+
+  istream.on(&#x27;close&#x27;, onClose)
+
+  function onClose () {
+    done(new Error(&#x27;Unexpected end of stream&#x27;))
+  }
+
+  function done (exception) {
+    istream.removeListener(&#x27;close&#x27;, onClose)
+
+    // We only emit aliased events once the &#x27;done&#x27; event has been raised,
+    // this is because an alias like &#x27;artist&#x27; could have values split
+    // over many data chunks.
+    for (var _alias in aliased) {
+      if (aliased.hasOwnProperty(_alias)) {
+        var val
+        if (_alias === &#x27;title&#x27; || _alias === &#x27;album&#x27; ||
+          _alias === &#x27;year&#x27; || _alias === &#x27;duration&#x27;) {
+          val = aliased[_alias][0]
+        } else {
+          val = aliased[_alias]
+        }
+
+        emitter.emit(_alias, val)
+
+        if (metadata.hasOwnProperty(_alias)) {
+          metadata[_alias] = val
+        }
+      }
+    }
+
+    if (callback) {
+      callback(exception, metadata)
+    }
+    return strtok.DONE
+  }
+
+  return emitter
+}</pre></li>
+    <li>example usage<pre class="apidocCodePre">n/a</pre></li>
+    </ul>
+
 
 </div>
 
