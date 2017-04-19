@@ -1,9 +1,14 @@
-# api documentation for  [musicmetadata (v2.0.5)](https://github.com/leetreveil/musicmetadata#readme)  [![npm package](https://img.shields.io/npm/v/npmdoc-musicmetadata.svg?style=flat-square)](https://www.npmjs.org/package/npmdoc-musicmetadata) [![travis-ci.org build-status](https://api.travis-ci.org/npmdoc/node-npmdoc-musicmetadata.svg)](https://travis-ci.org/npmdoc/node-npmdoc-musicmetadata)
+# npmdoc-musicmetadata
+
+#### api documentation for  [musicmetadata (v2.0.5)](https://github.com/leetreveil/musicmetadata#readme)  [![npm package](https://img.shields.io/npm/v/npmdoc-musicmetadata.svg?style=flat-square)](https://www.npmjs.org/package/npmdoc-musicmetadata) [![travis-ci.org build-status](https://api.travis-ci.org/npmdoc/node-npmdoc-musicmetadata.svg)](https://travis-ci.org/npmdoc/node-npmdoc-musicmetadata)
+
 #### Streaming music metadata parser for node and the browser.
 
-[![NPM](https://nodei.co/npm/musicmetadata.png?downloads=true)](https://www.npmjs.com/package/musicmetadata)
+[![NPM](https://nodei.co/npm/musicmetadata.png?downloads=true&downloadRank=true&stars=true)](https://www.npmjs.com/package/musicmetadata)
 
-[![apidoc](https://npmdoc.github.io/node-npmdoc-musicmetadata/build/screenCapture.buildNpmdoc.browser._2Fhome_2Ftravis_2Fbuild_2Fnpmdoc_2Fnode-npmdoc-musicmetadata_2Ftmp_2Fbuild_2Fapidoc.html.png)](https://npmdoc.github.io/node-npmdoc-musicmetadata/build/apidoc.html)
+- [https://npmdoc.github.io/node-npmdoc-musicmetadata/build/apidoc.html](https://npmdoc.github.io/node-npmdoc-musicmetadata/build/apidoc.html)
+
+[![apidoc](https://npmdoc.github.io/node-npmdoc-musicmetadata/build/screenCapture.buildCi.browser.%252Ftmp%252Fbuild%252Fapidoc.html.png)](https://npmdoc.github.io/node-npmdoc-musicmetadata/build/apidoc.html)
 
 ![npmPackageListing](https://npmdoc.github.io/node-npmdoc-musicmetadata/build/screenCapture.npmPackageListing.svg)
 
@@ -74,13 +79,11 @@
     "main": "lib",
     "maintainers": [
         {
-            "name": "leetreveil",
-            "email": "leetreveil@gmail.com"
+            "name": "leetreveil"
         }
     ],
     "name": "musicmetadata",
     "optionalDependencies": {},
-    "readme": "ERROR: No README data found!",
     "repository": {
         "type": "git",
         "url": "git://github.com/leetreveil/musicmetadata.git"
@@ -110,16 +113,6 @@
     "version": "2.0.5"
 }
 ```
-
-
-
-# <a name="apidoc.tableOfContents"></a>[table of contents](#apidoc.tableOfContents)
-
-#### [module musicmetadata](#apidoc.module.musicmetadata)
-
-
-
-# <a name="apidoc.module.musicmetadata"></a>[module musicmetadata](#apidoc.module.musicmetadata)
 
 
 
